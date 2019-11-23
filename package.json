@@ -1,0 +1,23 @@
+{
+  "name": "actions-npm-version-update",
+  "version": "1.0.0",
+  "description": "tag名でpackage.jsonのバージョンを再設定する",
+  "main": "dist/index.js",
+  "scripts": {
+    "watch": "tsc -b src -w",
+    "build": "tsc -b src && ncc build -m dist/index.js && cpx src/action.yml dist",
+    "test": "node dist/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "^1.2.0"
+  },
+  "devDependencies": {
+    "@zeit/ncc": "^0.20.5",
+    "cpx": "^1.5.0",
+    "typescript": "^3.7.2",
+    "@types/node": "^12.12.12"
+  }
+}

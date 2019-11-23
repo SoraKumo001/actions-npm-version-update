@@ -1,0 +1,5 @@
+name: 'actions-npm-version-update'
+description: 'packageのバージョンに情報を付加する'
+runs:
+  using: 'node12'
+  main: 'index.js'

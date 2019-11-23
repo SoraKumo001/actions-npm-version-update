@@ -1,0 +1,38 @@
+name: CI
+on:
+  push:
+
+jobs:
+  release:
+    name: build & release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: cache node_modules
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: xbrowser-yarn-${{ hashFiles('**\yarn.lock') }}
+          restore-keys: |
+            xbrowser-yarn-
+      - name: install
+        run: yarn install
+      - name: build
+        run: yarn build
+      - name: deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_BRANCH: 'release'
+        if: contains(github.ref, 'tags/v')
+        run: |
+          remote_url=`git remote get-url --push origin`
+          remote_url=https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@${remote_url#*//}
+          cp -r .git dist/
+          cd dist
+          git config --global user.name $GITHUB_ACTOR
+          git config --global user.email ${GITHUB_ACTOR}@git
+          git checkout -b $GIT_BRANCH
+          git remote set-url origin $remote_url
+          git add .
+          git commit -m ${GIT_BRANCH}
+          git push origin $GIT_BRANCH -f
