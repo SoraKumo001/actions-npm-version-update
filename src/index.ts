@@ -1,10 +1,12 @@
 #!/usr/bin/env node
+import * as core from "@actions/core";
 import * as fs from "fs";
 try {
+  const package_path = core.getInput("path");
   const ref = process.env.GITHUB_REF;
   if (!ref) throw "Error: 'refs/tags' not found";
 
-  const fileName = "package.json";
+  const fileName = package_path || "package.json";
   const packageValues = JSON.parse(fs.readFileSync(fileName).toString());
   const v = ref.match(/^refs\/tags\/(.*?)-(.*?)$/);
   if (!v || v.length < 3) throw "Error: 'refs/tags' format error";
