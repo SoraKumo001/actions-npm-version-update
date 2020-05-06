@@ -11,6 +11,7 @@ try {
   const v = ref.match(/^refs\/tags\/(.*?)-(.*?)$/);
   if (!v || v.length < 3) throw "Error: 'refs/tags' format error";
   const version = v[2];
+  console.log("path: %s", package_path);
   console.log("version: %s", version);
   fs.writeFileSync(
     fileName,
